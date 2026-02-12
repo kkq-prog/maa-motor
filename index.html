@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MAA MOTOR - نظام إدارة المعرض</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #0a0a0f;
+  --card: #12121a;
+  --card2: #1a1a28;
+  --border: #2a2a3d;
+  --gold: #d4a853;
+  --gold-light: #e8c97a;
+  --gold-dark: #b8912f;
+  --accent: #4a9eff;
+  --green: #34d399;
+  --red: #f87171;
+  --orange: #fb923c;
+  --text: #e8e8f0;
+  --text2: #9898b0;
+  --text3: #5a5a72;
+}
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background Pattern */
+body::before {
+content: ‘’;
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background:
+radial-gradient(ellipse at 20% 0%, rgba(212,168,83,0.08) 0%, transparent 60%),
+radial-gradient(ellipse at 80% 100%, rgba(74,158,255,0.05) 0%, transparent 60%);
+pointer-events: none;
+z-index: 0;
+}
+
+/* Header */
+.header {
+background: linear-gradient(135deg, #0f0f18 0%, #1a1525 50%, #0f0f18 100%);
+border-bottom: 1px solid var(–border);
+padding: 15px 20px;
+position: sticky;
+top: 0;
+z-index: 100;
+backdrop-filter: blur(20px);
+}
+.header-content {
+max-width: 1400px;
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.logo {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.logo-icon {
+width: 45px;
+height: 45px;
+background: linear-gradient(135deg, var(–gold), var(–gold-dark));
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 20px;
+font-weight: 900;
+color: #0a0a0f;
+letter-spacing: -1px;
+box-shadow: 0 4px 15px rgba(212,168,83,0.3);
+}
+.logo-text h1 {
+font-size: 20px;
+font-weight: 800;
+background: linear-gradient(135deg, var(–gold-light), var(–gold));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+letter-spacing: 1px;
+}
+.logo-text span {
+font-size: 11px;
+color: var(–text3);
+letter-spacing: 2px;
+}
+.header-time {
+text-align: left;
+font-size: 13px;
+color: var(–text2);
+}
+.header-time .date { font-weight: 700; color: var(–gold); font-size: 14px; }
+
+/* Navigation */
+.nav {
+background: var(–card);
+border-bottom: 1px solid var(–border);
+padding: 0 20px;
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none;
+position: sticky;
+top: 75px;
+z-index: 99;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-inner {
+max-width: 1400px;
+margin: 0 auto;
+display: flex;
+gap: 0;
+}
+.nav-btn {
+padding: 14px 20px;
+background: none;
+border: none;
+color: var(–text2);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+white-space: nowrap;
+border-bottom: 3px solid transparent;
+transition: all 0.3s;
+}
+.nav-btn:hover { color: var(–text); }
+.nav-btn.active {
+color: var(–gold);
+border-bottom-color: var(–gold);
+font-weight: 700;
+}
+
+/* Main */
+.main {
+max-width: 1400px;
+margin: 0 auto;
+padding: 20px;
+position: relative;
+z-index: 1;
+}
+
+/* Stats Row */
+.stats {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+gap: 12px;
+margin-bottom: 24px;
+}
+.stat-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 18px;
+position: relative;
+overflow: hidden;
+transition: transform 0.3s, box-shadow 0.3s;
+}
+.stat-card:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+.stat-card::before {
+content: ‘’;
+position: absolute;
+top: 0; right: 0;
+width: 60px; height: 60px;
+border-radius: 0 16px 0 40px;
+opacity: 0.1;
+}
+.stat-card.gold::before { background: var(–gold); }
+.stat-card.blue::before { background: var(–accent); }
+.stat-card.green::before { background: var(–green); }
+.stat-card.red::before { background: var(–red); }
+.stat-icon {
+font-size: 24px;
+margin-bottom: 10px;
+}
+.stat-value {
+font-size: 26px;
+font-weight: 800;
+}
+.stat-card.gold .stat-value { color: var(–gold); }
+.stat-card.blue .stat-value { color: var(–accent); }
+.stat-card.green .stat-value { color: var(–green); }
+.stat-card.red .stat-value { color: var(–red); }
+.stat-label {
+font-size: 12px;
+color: var(–text2);
+margin-top: 4px;
+}
+
+/* Section */
+.section {
+display: none;
+}
+.section.active {
+display: block;
+animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards */
+.card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 20px;
+margin-bottom: 16px;
+}
+.card-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 16px;
+}
+.card-title {
+font-size: 18px;
+font-weight: 700;
+color: var(–gold);
+}
+
+/* Buttons */
+.btn {
+padding: 10px 20px;
+border: none;
+border-radius: 10px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+}
+.btn-gold {
+background: linear-gradient(135deg, var(–gold), var(–gold-dark));
+color: #0a0a0f;
+}
+.btn-gold:hover { box-shadow: 0 4px 15px rgba(212,168,83,0.4); transform: translateY(-1px); }
+.btn-outline {
+background: transparent;
+border: 1px solid var(–border);
+color: var(–text2);
+}
+.btn-outline:hover { border-color: var(–gold); color: var(–gold); }
+.btn-red { background: rgba(248,113,113,0.15); color: var(–red); }
+.btn-green { background: rgba(52,211,153,0.15); color: var(–green); }
+.btn-sm { padding: 6px 14px; font-size: 12px; }
+
+/* Table */
+.table-wrap {
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+border-radius: 12px;
+border: 1px solid var(–border);
+}
+table {
+width: 100%;
+border-collapse: collapse;
+min-width: 700px;
+}
+th {
+background: var(–card2);
+padding: 12px 16px;
+text-align: right;
+font-size: 12px;
+font-weight: 600;
+color: var(–text2);
+text-transform: uppercase;
+letter-spacing: 1px;
+white-space: nowrap;
+}
+td {
+padding: 14px 16px;
+border-top: 1px solid var(–border);
+font-size: 14px;
+white-space: nowrap;
+}
+tr:hover td { background: rgba(212,168,83,0.03); }
+.badge {
+padding: 4px 12px;
+border-radius: 20px;
+font-size: 12px;
+font-weight: 600;
+}
+.badge-green { background: rgba(52,211,153,0.15); color: var(–green); }
+.badge-red { background: rgba(248,113,113,0.15); color: var(–red); }
+.badge-orange { background: rgba(251,146,60,0.15); color: var(–orange); }
+.badge-blue { background: rgba(74,158,255,0.15); color: var(–accent); }
+.badge-gold { background: rgba(212,168,83,0.15); color: var(–gold); }
+
+/* Forms */
+.form-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 14px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label {
+font-size: 12px;
+font-weight: 600;
+color: var(–text2);
+}
+.form-group input, .form-group select, .form-group textarea {
+padding: 10px 14px;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 10px;
+color: var(–text);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 14px;
+outline: none;
+transition: border-color 0.3s;
+}
+.form-group input:focus, .form-group select:focus {
+border-color: var(–gold);
+}
+
+/* Modal */
+.modal-overlay {
+display: none;
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(0,0,0,0.7);
+backdrop-filter: blur(5px);
+z-index: 200;
+justify-content: center;
+align-items: center;
+padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 20px;
+padding: 24px;
+width: 100%;
+max-width: 600px;
+max-height: 85vh;
+overflow-y: auto;
+animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+from { opacity: 0; transform: scale(0.95) translateY(20px); }
+to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-title {
+font-size: 20px;
+font-weight: 700;
+color: var(–gold);
+margin-bottom: 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.modal-close {
+background: none;
+border: none;
+color: var(–text3);
+font-size: 24px;
+cursor: pointer;
+}
+
+/* Plate Styles */
+.plate {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: #fff;
+color: #000;
+padding: 4px 12px;
+border-radius: 6px;
+font-weight: 700;
+font-size: 13px;
+direction: ltr;
+}
+.plate-emirate {
+font-size: 10px;
+color: #666;
+}
+
+/* Search */
+.search-box {
+position: relative;
+margin-bottom: 16px;
+}
+.search-box input {
+width: 100%;
+padding: 12px 16px 12px 40px;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 12px;
+color: var(–text);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 14px;
+outline: none;
+}
+.search-box input:focus { border-color: var(–gold); }
+.search-icon {
+position: absolute;
+left: 14px;
+top: 50%;
+transform: translateY(-50%);
+color: var(–text3);
+}
+
+/* Financial cards */
+.finance-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 16px;
+margin-bottom: 20px;
+}
+.finance-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 20px;
+}
+.finance-card h3 {
+font-size: 14px;
+color: var(–text2);
+margin-bottom: 10px;
+}
+.finance-card .amount {
+font-size: 28px;
+font-weight: 800;
+}
+.finance-card .amount.positive { color: var(–green); }
+.finance-card .amount.negative { color: var(–red); }
+.finance-card .amount.gold { color: var(–gold); }
+
+/* Empty state */
+.empty-state {
+text-align: center;
+padding: 60px 20px;
+color: var(–text3);
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+.empty-state p { font-size: 16px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+.stats { grid-template-columns: repeat(2, 1fr); }
+.stat-value { font-size: 22px; }
+.form-grid { grid-template-columns: 1fr; }
+.finance-grid { grid-template-columns: 1fr; }
+.header-content { flex-direction: column; gap: 8px; }
+}
+
+/* Print styles */
+@media print {
+.nav, .header, .btn { display: none !important; }
+.section { display: block !important; }
+body { background: #fff; color: #000; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(–bg); }
+::-webkit-scrollbar-thumb { background: var(–border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(–text3); }
+
+/* Action buttons in table */
+.action-btns { display: flex; gap: 6px; }
+</style>
+
+</head>
+<body>
+
+<!-- Header -->
+
+<div class="header">
+  <div class="header-content">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      <div class="logo-text">
+        <h1>MAA MOTOR</h1>
+        <span>DEALERSHIP MANAGEMENT</span>
+      </div>
+    </div>
+    <div class="header-time">
+      <div class="date" id="currentDate"></div>
+      <div id="currentTime"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+
+<div class="nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showSection('dashboard')">📊 الرئيسية</button>
+    <button class="nav-btn" onclick="showSection('inventory')">🚗 المخزون</button>
+    <button class="nav-btn" onclick="showSection('sales')">💰 المبيعات</button>
+    <button class="nav-btn" onclick="showSection('customers')">👥 العملاء</button>
+    <button class="nav-btn" onclick="showSection('employees')">👔 الموظفين</button>
+    <button class="nav-btn" onclick="showSection('finance')">📈 المالية</button>
+    <button class="nav-btn" onclick="showSection('expenses')">🧾 المصروفات</button>
+  </div>
+</div>
+
+<!-- Main Content -->
+
+<div class="main">
+
+  <!-- Dashboard -->
+
+  <div class="section active" id="sec-dashboard">
+    <div class="stats">
+      <div class="stat-card gold">
+        <div class="stat-icon">🚗</div>
+        <div class="stat-value" id="totalCars">0</div>
+        <div class="stat-label">إجمالي السيارات</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value" id="totalSales">0</div>
+        <div class="stat-label">سيارات مباعة</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value" id="totalCustomers">0</div>
+        <div class="stat-label">العملاء</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value" id="totalRevenue">0</div>
+        <div class="stat-label">الإيرادات (د.إ)</div>
+      </div>
+    </div>
+
+```
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">📋 آخر العمليات</div>
+  </div>
+  <div id="recentActivity">
+    <div class="empty-state">
+      <div class="icon">📋</div>
+      <p>لا توجد عمليات بعد</p>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- Inventory -->
+
+  <div class="section" id="sec-inventory">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🚗 مخزون السيارات</div>
+        <button class="btn btn-gold" onclick="openModal('addCar')">+ إضافة سيارة</button>
+      </div>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="بحث عن سيارة..." oninput="filterCars(this.value)">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الماركة</th>
+              <th>الموديل</th>
+              <th>السنة</th>
+              <th>اللون</th>
+              <th>اللوحة</th>
+              <th>سعر الشراء</th>
+              <th>سعر البيع</th>
+              <th>الحالة</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="carsTable"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="carsEmpty">
+        <div class="icon">🚗</div>
+        <p>لا توجد سيارات - أضف أول سيارة</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sales -->
+
+  <div class="section" id="sec-sales">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">💰 المبيعات</div>
+        <button class="btn btn-gold" onclick="openModal('addSale')">+ بيع سيارة</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>السيارة</th>
+              <th>المشتري</th>
+              <th>سعر البيع</th>
+              <th>الربح</th>
+              <th>التاريخ</th>
+              <th>طريقة الدفع</th>
+            </tr>
+          </thead>
+          <tbody id="salesTable"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="salesEmpty">
+        <div class="icon">💰</div>
+        <p>لا توجد مبيعات بعد</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customers -->
+
+  <div class="section" id="sec-customers">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">👥 العملاء</div>
+        <button class="btn btn-gold" onclick="openModal('addCustomer')">+ إضافة عميل</button>
+      </div>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="بحث عن عميل..." oninput="filterCustomers(this.value)">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>الهاتف</th>
+              <th>الهوية</th>
+              <th>العنوان</th>
+              <th>تاريخ التسجيل</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="customersTable"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="customersEmpty">
+        <div class="icon">👥</div>
+        <p>لا يوجد عملاء - أضف أول عميل</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employees -->
+
+  <div class="section" id="sec-employees">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">👔 الموظفين والرواتب</div>
+        <button class="btn btn-gold" onclick="openModal('addEmployee')">+ إضافة موظف</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>المنصب</th>
+              <th>الهاتف</th>
+              <th>الراتب الأساسي</th>
+              <th>العمولة</th>
+              <th>الحالة</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="employeesTable"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="employeesEmpty">
+        <div class="icon">👔</div>
+        <p>لا يوجد موظفين - أضف أول موظف</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finance -->
+
+  <div class="section" id="sec-finance">
+    <div class="finance-grid">
+      <div class="finance-card">
+        <h3>💰 إجمالي المبيعات</h3>
+        <div class="amount gold" id="finTotalSales">0 د.إ</div>
+      </div>
+      <div class="finance-card">
+        <h3>📈 إجمالي الأرباح</h3>
+        <div class="amount positive" id="finTotalProfit">0 د.إ</div>
+      </div>
+      <div class="finance-card">
+        <h3>🧾 إجمالي المصروفات</h3>
+        <div class="amount negative" id="finTotalExpenses">0 د.إ</div>
+      </div>
+      <div class="finance-card">
+        <h3>💵 صافي الربح</h3>
+        <div class="amount gold" id="finNetProfit">0 د.إ</div>
+      </div>
+      <div class="finance-card">
+        <h3>🚗 قيمة المخزون</h3>
+        <div class="amount gold" id="finInventoryValue">0 د.إ</div>
+      </div>
+      <div class="finance-card">
+        <h3>👔 إجمالي الرواتب</h3>
+        <div class="amount negative" id="finTotalSalaries">0 د.إ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expenses -->
+
+  <div class="section" id="sec-expenses">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🧾 المصروفات</div>
+        <button class="btn btn-gold" onclick="openModal('addExpense')">+ إضافة مصروف</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الوصف</th>
+              <th>الفئة</th>
+              <th>المبلغ</th>
+              <th>التاريخ</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="expensesTable"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="expensesEmpty">
+        <div class="icon">🧾</div>
+        <p>لا توجد مصروفات بعد</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modals -->
+
+<!-- Add Car Modal -->
+
+<div class="modal-overlay" id="modal-addCar">
+  <div class="modal">
+    <div class="modal-title">
+      🚗 إضافة سيارة جديدة
+      <button class="modal-close" onclick="closeModal('addCar')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>الماركة</label>
+        <select id="carBrand">
+          <option value="">اختر الماركة</option>
+          <option>تويوتا</option><option>نيسان</option><option>هوندا</option>
+          <option>مرسيدس</option><option>بي ام دبليو</option><option>أودي</option>
+          <option>لكزس</option><option>بورش</option><option>رنج روفر</option>
+          <option>شيفروليه</option><option>فورد</option><option>هيونداي</option>
+          <option>كيا</option><option>مازيراتي</option><option>بنتلي</option>
+          <option>رولز رويس</option><option>لامبورغيني</option><option>فيراري</option>
+          <option>أخرى</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>الموديل</label>
+        <input type="text" id="carModel" placeholder="مثال: كامري">
+      </div>
+      <div class="form-group">
+        <label>سنة الصنع</label>
+        <input type="number" id="carYear" placeholder="2024">
+      </div>
+      <div class="form-group">
+        <label>اللون</label>
+        <select id="carColor">
+          <option value="">اختر اللون</option>
+          <option>أبيض</option><option>أسود</option><option>فضي</option>
+          <option>رمادي</option><option>أحمر</option><option>أزرق</option>
+          <option>أخضر</option><option>بيج</option><option>ذهبي</option>
+          <option>بني</option><option>برتقالي</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>الإمارة</label>
+        <select id="carEmirate">
+          <option value="">اختر الإمارة</option>
+          <option>أبوظبي</option><option>دبي</option><option>الشارقة</option>
+          <option>عجمان</option><option>أم القيوين</option><option>رأس الخيمة</option>
+          <option>الفجيرة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>رقم اللوحة</label>
+        <input type="text" id="carPlate" placeholder="مثال: A 12345">
+      </div>
+      <div class="form-group">
+        <label>سعر الشراء (د.إ)</label>
+        <input type="number" id="carBuyPrice" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label>سعر البيع المطلوب (د.إ)</label>
+        <input type="number" id="carSellPrice" placeholder="0">
+      </div>
+      <div class="form-group" style="grid-column: 1/-1">
+        <label>ملاحظات</label>
+        <textarea id="carNotes" rows="2" style="resize:none" placeholder="ملاحظات إضافية..."></textarea>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-start">
+      <button class="btn btn-gold" onclick="addCar()">💾 حفظ السيارة</button>
+      <button class="btn btn-outline" onclick="closeModal('addCar')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Sale Modal -->
+
+<div class="modal-overlay" id="modal-addSale">
+  <div class="modal">
+    <div class="modal-title">
+      💰 تسجيل بيع
+      <button class="modal-close" onclick="closeModal('addSale')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>السيارة</label>
+        <select id="saleCar"></select>
+      </div>
+      <div class="form-group">
+        <label>المشتري</label>
+        <select id="saleCustomer"></select>
+      </div>
+      <div class="form-group">
+        <label>سعر البيع الفعلي (د.إ)</label>
+        <input type="number" id="salePrice" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label>طريقة الدفع</label>
+        <select id="salePayment">
+          <option>نقداً</option>
+          <option>تحويل بنكي</option>
+          <option>شيك</option>
+          <option>تقسيط</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-start">
+      <button class="btn btn-gold" onclick="addSale()">✅ تأكيد البيع</button>
+      <button class="btn btn-outline" onclick="closeModal('addSale')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Customer Modal -->
+
+<div class="modal-overlay" id="modal-addCustomer">
+  <div class="modal">
+    <div class="modal-title">
+      👥 إضافة عميل جديد
+      <button class="modal-close" onclick="closeModal('addCustomer')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>الاسم الكامل</label>
+        <input type="text" id="custName" placeholder="الاسم الكامل">
+      </div>
+      <div class="form-group">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="custPhone" placeholder="05X XXX XXXX">
+      </div>
+      <div class="form-group">
+        <label>رقم الهوية / جواز السفر</label>
+        <input type="text" id="custID" placeholder="رقم الهوية">
+      </div>
+      <div class="form-group">
+        <label>العنوان</label>
+        <input type="text" id="custAddress" placeholder="المدينة - المنطقة">
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-start">
+      <button class="btn btn-gold" onclick="addCustomer()">💾 حفظ العميل</button>
+      <button class="btn btn-outline" onclick="closeModal('addCustomer')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Employee Modal -->
+
+<div class="modal-overlay" id="modal-addEmployee">
+  <div class="modal">
+    <div class="modal-title">
+      👔 إضافة موظف جديد
+      <button class="modal-close" onclick="closeModal('addEmployee')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>الاسم الكامل</label>
+        <input type="text" id="empName" placeholder="الاسم الكامل">
+      </div>
+      <div class="form-group">
+        <label>المنصب</label>
+        <select id="empRole">
+          <option>مدير مبيعات</option>
+          <option>موظف مبيعات</option>
+          <option>محاسب</option>
+          <option>فني صيانة</option>
+          <option>سكرتير</option>
+          <option>سائق</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="empPhone" placeholder="05X XXX XXXX">
+      </div>
+      <div class="form-group">
+        <label>الراتب الأساسي (د.إ)</label>
+        <input type="number" id="empSalary" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label>نسبة العمولة %</label>
+        <input type="number" id="empCommission" placeholder="0" min="0" max="100">
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-start">
+      <button class="btn btn-gold" onclick="addEmployee()">💾 حفظ الموظف</button>
+      <button class="btn btn-outline" onclick="closeModal('addEmployee')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Expense Modal -->
+
+<div class="modal-overlay" id="modal-addExpense">
+  <div class="modal">
+    <div class="modal-title">
+      🧾 إضافة مصروف
+      <button class="modal-close" onclick="closeModal('addExpense')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>الوصف</label>
+        <input type="text" id="expDesc" placeholder="وصف المصروف">
+      </div>
+      <div class="form-group">
+        <label>الفئة</label>
+        <select id="expCategory">
+          <option>إيجار</option>
+          <option>كهرباء وماء</option>
+          <option>صيانة</option>
+          <option>تسويق وإعلان</option>
+          <option>تأمين</option>
+          <option>وقود</option>
+          <option>مشتريات</option>
+          <option>أخرى</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>المبلغ (د.إ)</label>
+        <input type="number" id="expAmount" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label>التاريخ</label>
+        <input type="date" id="expDate">
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-start">
+      <button class="btn btn-gold" onclick="addExpense()">💾 حفظ المصروف</button>
+      <button class="btn btn-outline" onclick="closeModal('addExpense')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== DATA STORE ==========
+let data = {
+  cars: [],
+  sales: [],
+  customers: [],
+  employees: [],
+  expenses: [],
+  activities: []
+};
+
+// Load from localStorage
+function loadData() {
+  const saved = localStorage.getItem('maaMotorData');
+  if (saved) data = JSON.parse(saved);
+}
+function saveData() {
+  localStorage.setItem('maaMotorData', JSON.stringify(data));
+}
+loadData();
+
+// ========== DATE/TIME ==========
+function updateDateTime() {
+  const now = new Date();
+  const options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('currentDate').textContent = now.toLocaleDateString('ar-AE', options);
+  document.getElementById('currentTime').textContent = now.toLocaleTimeString('ar-AE');
+}
+updateDateTime();
+setInterval(updateDateTime, 1000);
+
+// ========== NAVIGATION ==========
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'sales') populateSaleDropdowns();
+  if (name === 'finance') updateFinance();
+}
+
+// ========== MODAL ==========
+function openModal(name) {
+  document.getElementById('modal-' + name).classList.add('show');
+}
+function closeModal(name) {
+  document.getElementById('modal-' + name).classList.remove('show');
+}
+
+// ========== FORMAT ==========
+function fmt(n) {
+  return Number(n).toLocaleString('ar-AE');
+}
+
+// ========== CARS ==========
+function addCar() {
+  const car = {
+    id: Date.now(),
+    brand: document.getElementById('carBrand').value,
+    model: document.getElementById('carModel').value,
+    year: document.getElementById('carYear').value,
+    color: document.getElementById('carColor').value,
+    emirate: document.getElementById('carEmirate').value,
+    plate: document.getElementById('carPlate').value,
+    buyPrice: Number(document.getElementById('carBuyPrice').value),
+    sellPrice: Number(document.getElementById('carSellPrice').value),
+    notes: document.getElementById('carNotes').value,
+    status: 'متوفرة',
+    date: new Date().toLocaleDateString('ar-AE')
+  };
+  if (!car.brand || !car.model) return alert('الرجاء إدخال الماركة والموديل');
+  data.cars.push(car);
+  data.activities.unshift({ text: `تمت إضافة ${car.brand} ${car.model} ${car.year}`, date: new Date().toLocaleString('ar-AE'), type: 'car' });
+  saveData();
+  renderCars();
+  updateStats();
+  closeModal('addCar');
+  // Reset form
+  ['carBrand','carModel','carYear','carColor','carEmirate','carPlate','carBuyPrice','carSellPrice','carNotes'].forEach(id => document.getElementById(id).value = '');
+}
+
+function renderCars() {
+  const tbody = document.getElementById('carsTable');
+  const empty = document.getElementById('carsEmpty');
+  if (data.cars.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = data.cars.map((c, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${c.brand}</strong></td>
+      <td>${c.model}</td>
+      <td>${c.year}</td>
+      <td>${c.color}</td>
+      <td><span class="plate">${c.emirate} ${c.plate}</span></td>
+      <td>${fmt(c.buyPrice)} د.إ</td>
+      <td>${fmt(c.sellPrice)} د.إ</td>
+      <td><span class="badge ${c.status === 'متوفرة' ? 'badge-green' : 'badge-red'}">${c.status}</span></td>
+      <td>
+        <div class="action-btns">
+          <button class="btn btn-red btn-sm" onclick="deleteCar(${c.id})">حذف</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function deleteCar(id) {
+  if (!confirm('هل تريد حذف هذه السيارة؟')) return;
+  data.cars = data.cars.filter(c => c.id !== id);
+  saveData(); renderCars(); updateStats();
+}
+
+function filterCars(q) {
+  const rows = document.querySelectorAll('#carsTable tr');
+  rows.forEach(row => {
+    row.style.display = row.textContent.includes(q) ? '' : 'none';
+  });
+}
+
+// ========== SALES ==========
+function populateSaleDropdowns() {
+  const carSelect = document.getElementById('saleCar');
+  const custSelect = document.getElementById('saleCustomer');
+  const available = data.cars.filter(c => c.status === 'متوفرة');
+  carSelect.innerHTML = '<option value="">اختر السيارة</option>' + available.map(c => `<option value="${c.id}">${c.brand} ${c.model} ${c.year} - ${fmt(c.sellPrice)} د.إ</option>`).join('');
+  custSelect.innerHTML = '<option value="">اختر المشتري</option>' + data.customers.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function addSale() {
+  const carId = Number(document.getElementById('saleCar').value);
+  const custId = Number(document.getElementById('saleCustomer').value);
+  const price = Number(document.getElementById('salePrice').value);
+  const payment = document.getElementById('salePayment').value;
+  if (!carId || !custId || !price) return alert('الرجاء ملء جميع الحقول');
+  const car = data.cars.find(c => c.id === carId);
+  const cust = data.customers.find(c => c.id === custId);
+  const sale = {
+    id: Date.now(),
+    carId, customerId: custId,
+    carName: `${car.brand} ${car.model} ${car.year}`,
+    customerName: cust.name,
+    price, profit: price - car.buyPrice,
+    payment,
+    date: new Date().toLocaleDateString('ar-AE')
+  };
+  data.sales.push(sale);
+  car.status = 'مباعة';
+  data.activities.unshift({ text: `تم بيع ${car.brand} ${car.model} لـ ${cust.name} بمبلغ ${fmt(price)} د.إ`, date: new Date().toLocaleString('ar-AE'), type: 'sale' });
+  saveData(); renderSales(); renderCars(); updateStats();
+  closeModal('addSale');
+}
+
+function renderSales() {
+  const tbody = document.getElementById('salesTable');
+  const empty = document.getElementById('salesEmpty');
+  if (data.sales.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = data.sales.map((s, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${s.carName}</strong></td>
+      <td>${s.customerName}</td>
+      <td>${fmt(s.price)} د.إ</td>
+      <td><span class="badge ${s.profit >= 0 ? 'badge-green' : 'badge-red'}">${fmt(s.profit)} د.إ</span></td>
+      <td>${s.date}</td>
+      <td><span class="badge badge-blue">${s.payment}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ========== CUSTOMERS ==========
+function addCustomer() {
+  const cust = {
+    id: Date.now(),
+    name: document.getElementById('custName').value,
+    phone: document.getElementById('custPhone').value,
+    idNumber: document.getElementById('custID').value,
+    address: document.getElementById('custAddress').value,
+    date: new Date().toLocaleDateString('ar-AE')
+  };
+  if (!cust.name || !cust.phone) return alert('الرجاء إدخال الاسم والهاتف');
+  data.customers.push(cust);
+  data.activities.unshift({ text: `تمت إضافة العميل ${cust.name}`, date: new Date().toLocaleString('ar-AE'), type: 'customer' });
+  saveData(); renderCustomers(); updateStats();
+  closeModal('addCustomer');
+  ['custName','custPhone','custID','custAddress'].forEach(id => document.getElementById(id).value = '');
+}
+
+function renderCustomers() {
+  const tbody = document.getElementById('customersTable');
+  const empty = document.getElementById('customersEmpty');
+  if (data.customers.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = data.customers.map((c, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${c.name}</strong></td>
+      <td>${c.phone}</td>
+      <td>${c.idNumber}</td>
+      <td>${c.address}</td>
+      <td>${c.date}</td>
+      <td><button class="btn btn-red btn-sm" onclick="deleteCustomer(${c.id})">حذف</button></td>
+    </tr>
+  `).join('');
+}
+
+function deleteCustomer(id) {
+  if (!confirm('هل تريد حذف هذا العميل؟')) return;
+  data.customers = data.customers.filter(c => c.id !== id);
+  saveData(); renderCustomers(); updateStats();
+}
+
+function filterCustomers(q) {
+  const rows = document.querySelectorAll('#customersTable tr');
+  rows.forEach(row => {
+    row.style.display = row.textContent.includes(q) ? '' : 'none';
+  });
+}
+
+// ========== EMPLOYEES ==========
+function addEmployee() {
+  const emp = {
+    id: Date.now(),
+    name: document.getElementById('empName').value,
+    role: document.getElementById('empRole').value,
+    phone: document.getElementById('empPhone').value,
+    salary: Number(document.getElementById('empSalary').value),
+    commission: Number(document.getElementById('empCommission').value),
+    status: 'نشط'
+  };
+  if (!emp.name) return alert('الرجاء إدخال اسم الموظف');
+  data.employees.push(emp);
+  data.activities.unshift({ text: `تمت إضافة الموظف ${emp.name}`, date: new Date().toLocaleString('ar-AE'), type: 'employee' });
+  saveData(); renderEmployees(); updateStats();
+  closeModal('addEmployee');
+  ['empName','empPhone','empSalary','empCommission'].forEach(id => document.getElementById(id).value = '');
+}
+
+function renderEmployees() {
+  const tbody = document.getElementById('employeesTable');
+  const empty = document.getElementById('employeesEmpty');
+  if (data.employees.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = data.employees.map((e, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${e.name}</strong></td>
+      <td><span class="badge badge-gold">${e.role}</span></td>
+      <td>${e.phone}</td>
+      <td>${fmt(e.salary)} د.إ</td>
+      <td>${e.commission}%</td>
+      <td><span class="badge badge-green">${e.status}</span></td>
+      <td><button class="btn btn-red btn-sm" onclick="deleteEmployee(${e.id})">حذف</button></td>
+    </tr>
+  `).join('');
+}
+
+function deleteEmployee(id) {
+  if (!confirm('هل تريد حذف هذا الموظف؟')) return;
+  data.employees = data.employees.filter(e => e.id !== id);
+  saveData(); renderEmployees();
+}
+
+// ========== EXPENSES ==========
+function addExpense() {
+  const exp = {
+    id: Date.now(),
+    desc: document.getElementById('expDesc').value,
+    category: document.getElementById('expCategory').value,
+    amount: Number(document.getElementById('expAmount').value),
+    date: document.getElementById('expDate').value || new Date().toLocaleDateString('ar-AE')
+  };
+  if (!exp.desc || !exp.amount) return alert('الرجاء إدخال الوصف والمبلغ');
+  data.expenses.push(exp);
+  data.activities.unshift({ text: `مصروف: ${exp.desc} - ${fmt(exp.amount)} د.إ`, date: new Date().toLocaleString('ar-AE'), type: 'expense' });
+  saveData(); renderExpenses(); updateStats();
+  closeModal('addExpense');
+  ['expDesc','expAmount','expDate'].forEach(id => document.getElementById(id).value = '');
+}
+
+function renderExpenses() {
+  const tbody = document.getElementById('expensesTable');
+  const empty = document.getElementById('expensesEmpty');
+  if (data.expenses.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = data.expenses.map((e, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${e.desc}</strong></td>
+      <td><span class="badge badge-orange">${e.category}</span></td>
+      <td>${fmt(e.amount)} د.إ</td>
+      <td>${e.date}</td>
+      <td><button class="btn btn-red btn-sm" onclick="deleteExpense(${e.id})">حذف</button></td>
+    </tr>
+  `).join('');
+}
+
+function deleteExpense(id) {
+  if (!confirm('هل تريد حذف هذا المصروف؟')) return;
+  data.expenses = data.expenses.filter(e => e.id !== id);
+  saveData(); renderExpenses(); updateStats();
+}
+
+// ========== STATS ==========
+function updateStats() {
+  document.getElementById('totalCars').textContent = data.cars.filter(c => c.status === 'متوفرة').length;
+  document.getElementById('totalSales').textContent = data.sales.length;
+  document.getElementById('totalCustomers').textContent = data.customers.length;
+  const revenue = data.sales.reduce((sum, s) => sum + s.price, 0);
+  document.getElementById('totalRevenue').textContent = fmt(revenue);
+  renderActivities();
+}
+
+function renderActivities() {
+  const el = document.getElementById('recentActivity');
+  if (data.activities.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>لا توجد عمليات بعد</p></div>';
+    return;
+  }
+  const icons = { car: '🚗', sale: '💰', customer: '👥', employee: '👔', expense: '🧾' };
+  el.innerHTML = data.activities.slice(0, 10).map(a => `
+    <div style="padding:12px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <div><span style="margin-left:8px">${icons[a.type] || '📋'}</span>${a.text}</div>
+      <div style="font-size:12px;color:var(--text3);white-space:nowrap">${a.date}</div>
+    </div>
+  `).join('');
+}
+
+// ========== FINANCE ==========
+function updateFinance() {
+  const totalSales = data.sales.reduce((s, v) => s + v.price, 0);
+  const totalProfit = data.sales.reduce((s, v) => s + v.profit, 0);
+  const totalExpenses = data.expenses.reduce((s, v) => s + v.amount, 0);
+  const totalSalaries = data.employees.reduce((s, v) => s + v.salary, 0);
+  const inventoryValue = data.cars.filter(c => c.status === 'متوفرة').reduce((s, v) => s + v.buyPrice, 0);
+  const netProfit = totalProfit - totalExpenses - totalSalaries;
+
+  document.getElementById('finTotalSales').textContent = fmt(totalSales) + ' د.إ';
+  document.getElementById('finTotalProfit').textContent = fmt(totalProfit) + ' د.إ';
+  document.getElementById('finTotalExpenses').textContent = fmt(totalExpenses) + ' د.إ';
+  document.getElementById('finTotalSalaries').textContent = fmt(totalSalaries) + ' د.إ';
+  document.getElementById('finInventoryValue').textContent = fmt(inventoryValue) + ' د.إ';
+  document.getElementById('finNetProfit').textContent = fmt(netProfit) + ' د.إ';
+  document.getElementById('finNetProfit').className = 'amount ' + (netProfit >= 0 ? 'positive' : 'negative');
+}
+
+// ========== INIT ==========
+renderCars();
+renderSales();
+renderCustomers();
+renderEmployees();
+renderExpenses();
+updateStats();
+</script>
+
+</body>
+</html>
